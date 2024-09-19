@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 #include <raylib.h>
-
-#ifndef fnForwardDec
-#define fnForwardDec
+#pragma once
 
 using namespace std;
 extern bool menuexit, gameover, mode;
@@ -15,4 +13,4 @@ void rendercursor();
 void multiplayer();
 void endscreen();
 
-#endif
+

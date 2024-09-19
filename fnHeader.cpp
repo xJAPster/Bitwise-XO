@@ -19,14 +19,42 @@ void menuscreen() {
 }
 
 inline void inputChecker(int& x, int& y) {
-    if (IsKeyPressed(KEY_W) && x > 0) --x;
-    if (IsKeyPressed(KEY_S) && x < 2) ++x;
-    if (IsKeyPressed(KEY_A) && y > 0) --y;
-    if (IsKeyPressed(KEY_D) && y < 2) ++y;
+    if (IsKeyPressed(KEY_W) && y > 0) --y;
+    if (IsKeyPressed(KEY_S) && y < 2) ++y;
+    if (IsKeyPressed(KEY_A) && x > 0) --x;
+    if (IsKeyPressed(KEY_D) && x < 2) ++x;
 }
 
-void rendercursor() {
-    DrawTexture(cursortexture, 430, 170, WHITE);
+void rendercursor(const int& x, const int& y) {
+    int posX, posY;
+
+    //x : 430, 583, 736
+    //y : 160, 313, 466
+    switch(x){
+        case 0:
+            posX = 430;
+            break;
+        case 1:
+            posX = 583;
+            break;
+        case 2:
+            posX = 736;
+            break;
+    }
+
+    switch(y){
+        case 0:
+            posY = 160;
+            break;
+        case 1:
+            posY = 313;
+            break;
+        case 2:
+            posY = 466;
+            break;
+    }
+
+    DrawTexture(cursortexture, posX, posY, WHITE);
 }
 
 void multiplayer() {
@@ -40,18 +68,20 @@ void multiplayer() {
         // function to render placed tokens
 
         if (IsKeyPressed(KEY_ENTER) && mat[x][y] == ' ') {
-            mat[x][y] = (turn) ? 'X' : '0'; // placing token
+            mat[y][x] = (turn) ? 'X' : '0'; // placing token
             turn = !turn;
             ++turncount;
         }
 
         BeginDrawing();
+
         ClearBackground(BLACK);
         DrawTexture(gridtexture, 0, 0, WHITE);
-        rendercursor();
+        rendercursor(x,y);
+
         EndDrawing();
 
-        if (x == 2 && y == 2) {
+        if (x == 2 && y == 2) { //temporary gameover condition, replace with win validation
             win = 1;
             gameover = 1;
         }
