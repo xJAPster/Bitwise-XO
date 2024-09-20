@@ -11,16 +11,20 @@ int main(){
     SetTargetFPS(60);
     InitAudioDevice();
 
-    grid = LoadImage("assets/grid.png");
-    gridtexture = LoadTextureFromImage(grid);
-    cursor = LoadImage("assets/selectcursor.png");
-    cursortexture = LoadTextureFromImage(cursor);
-
+    //loading assets
     menuasset = LoadImage("assets/menuasset1.png");
     menutexture = LoadTextureFromImage(menuasset);
 
     press_e_asset = LoadImage("assets/press_enter.png");
     press_e_texture  = LoadTextureFromImage(press_e_asset);
+
+    gameplay_text1_asset = LoadImage("assets/gameplay_text1.png");
+    gameplay_text1_texture = LoadTextureFromImage(gameplay_text1_asset);
+
+    grid = LoadImage("assets/grid.png");
+    gridtexture = LoadTextureFromImage(grid);
+    cursor = LoadImage("assets/selectcursor.png");
+    cursortexture = LoadTextureFromImage(cursor);
 
     xicon = LoadImage("assets/X_icon.png");
     xtexture = LoadTextureFromImage(xicon);
@@ -36,6 +40,7 @@ int main(){
         if(mode)multiplayer();
     }
 
+    //handling open assets
     UnloadTexture(gridtexture);
     UnloadImage(grid);
     UnloadTexture(cursortexture);

@@ -1,8 +1,8 @@
 #include "fnHeader.h"
 
 bool menuexit = 0, gameover = 0, mode = 1, draw = 0;
-Image grid, cursor,  xicon, oicon, menuasset, press_e_asset;
-Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture;
+Image grid, cursor,  xicon, oicon, menuasset, press_e_asset, gameplay_text1_asset;
+Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture, gameplay_text1_texture;
 
 void menuscreen() {
     float interval = 1.0;
@@ -78,25 +78,25 @@ void renderstate(const vector<vector<char>>& mat){
             if(mat[y][x]=='X'){
                 switch(x){
                 case 0:
-                    posX = 440;
+                    posX = 445;
                     break;
                 case 1:
-                    posX = 593;
+                    posX = 598;
                     break;
                 case 2:
-                    posX = 746;
+                    posX = 751;
                     break;
                 }
 
                 switch(y){
                     case 0:
-                        posY = 170;
+                        posY = 175;
                         break;
                     case 1:
-                        posY = 323;
+                        posY = 328;
                         break;
                     case 2:
-                        posY = 476;
+                        posY = 481;
                         break;
                 }
                 DrawTexture(xtexture, posX, posY, WHITE);
@@ -105,25 +105,25 @@ void renderstate(const vector<vector<char>>& mat){
             else if(mat[y][x]=='O'){
                 switch(x){
                 case 0:
-                    posX = 440;
+                    posX = 445;
                     break;
                 case 1:
-                    posX = 593;
+                    posX = 598;
                     break;
                 case 2:
-                    posX = 746;
+                    posX = 751;
                     break;
                 }
 
                 switch(y){
                     case 0:
-                        posY = 170;
+                        posY = 175;
                         break;
                     case 1:
-                        posY = 323;
+                        posY = 328;
                         break;
                     case 2:
-                        posY = 476;
+                        posY = 481;
                         break;
                 }
                 DrawTexture(otexture, posX, posY, WHITE);
@@ -164,6 +164,7 @@ void multiplayer() {
 
         ClearBackground(BLACK);
         DrawTexture(gridtexture, 0, 0, WHITE);
+        DrawTexture(gameplay_text1_texture, 250, 40, WHITE);
         rendercursor(x,y);
         renderstate(mat);
 
