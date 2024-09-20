@@ -4,8 +4,8 @@
 
 using namespace std;
 extern bool menuexit, gameover, mode;
-extern Image grid, cursor, xicon, oicon;
-extern Texture2D gridtexture, cursortexture, xtexture, otexture;
+extern Image grid, cursor, xicon, oicon, menuasset, press_e_asset;
+extern Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture;
 
 void menuscreen();
 void multiplayer();

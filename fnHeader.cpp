@@ -1,14 +1,22 @@
 #include "fnHeader.h"
 
 bool menuexit = 0, gameover = 0, mode = 1;
-Image grid, cursor,  xicon, oicon;
-Texture2D gridtexture, cursortexture, xtexture, otexture;
+Image grid, cursor,  xicon, oicon, menuasset, press_e_asset;
+Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture;
 
 void menuscreen() {
+    float interval = 1.0;
+    
     while (!WindowShouldClose() && !menuexit) {
+        float timeElapsed = GetTime();
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawText("MENU SCREEN", 640, 360, 30, WHITE); // placeholder
+
+        DrawTexture(menutexture, 0, 0, WHITE);
+        //blinking 'press enter to start' text
+        bool shouldDraw = fmod(timeElapsed, interval*2) < interval;
+        if(shouldDraw)DrawTexture(press_e_texture, 420, 450, WHITE);
+
         EndDrawing();
 
         if (IsKeyPressed(KEY_ENTER)) {
@@ -18,6 +26,7 @@ void menuscreen() {
     }
 }
 
+//checking for user input
 inline void inputChecker(int& x, int& y) {
     if (IsKeyPressed(KEY_W) && y > 0) --y;
     if (IsKeyPressed(KEY_S) && y < 2) ++y;
@@ -25,6 +34,7 @@ inline void inputChecker(int& x, int& y) {
     if (IsKeyPressed(KEY_D) && x < 2) ++x;
 }
 
+//rendering selection cursor
 void rendercursor(const int& x, const int& y) {
     int posX, posY;
 
@@ -57,6 +67,7 @@ void rendercursor(const int& x, const int& y) {
     DrawTexture(cursortexture, posX, posY, WHITE);
 }
 
+//rendering placed tokens
 void renderstate(const vector<vector<char>>& mat){
     int posX, posY;
 

@@ -7,7 +7,7 @@ int main(){
     const int width = 1280;
     const int height = 720;
 
-    InitWindow(width, height, "Bitwise-XO");
+    InitWindow(width, height, "bitwise XO");
     SetTargetFPS(60);
     InitAudioDevice();
 
@@ -15,6 +15,12 @@ int main(){
     gridtexture = LoadTextureFromImage(grid);
     cursor = LoadImage("assets/selectcursor.png");
     cursortexture = LoadTextureFromImage(cursor);
+
+    menuasset = LoadImage("assets/menuasset1.png");
+    menutexture = LoadTextureFromImage(menuasset);
+
+    press_e_asset = LoadImage("assets/press_enter.png");
+    press_e_texture  = LoadTextureFromImage(press_e_asset);
 
     xicon = LoadImage("assets/X_icon.png");
     xtexture = LoadTextureFromImage(xicon);
