@@ -151,7 +151,7 @@ void multiplayer() {
     bool win = 0, turn = 1;
     vector<vector<char>> mat(3, vector<char>(3, ' '));
 
-    while (!WindowShouldClose() && !win) {
+    while (!WindowShouldClose() && (!win && !draw)) {
         inputChecker(x, y);
 
         if(IsKeyPressed(KEY_SPACE) && mat[y][x] == ' ') {
@@ -163,16 +163,18 @@ void multiplayer() {
         BeginDrawing();
 
         ClearBackground(BLACK);
-        DrawTexture(gridtexture, 0, 0, WHITE);
+        DrawTexture(gridtexture, 0, 0, WHITE); //drawing the grid
         DrawTexture(gameplay_text1_texture, 250, 40, WHITE);
-        rendercursor(x,y);
-        renderstate(mat);
+        rendercursor(x,y); //rendering the cursor
+        renderstate(mat); //rendering the game state/placed tokens
 
         EndDrawing();
 
         if (winvalidation(mat) || turncount==9) { 
-            win = 1;
-            gameover = 1;
+            if(turncount==9)draw=1;
+            else win=1;
+
+            gameover=1;
         }
     }
 }
