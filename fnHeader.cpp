@@ -1,8 +1,8 @@
 #include "fnHeader.h"
 
 bool menuexit = 0, gameover = 0, mode = 1, draw = 0;
-Image grid, cursor,  xicon, oicon, menuasset, press_e_asset, gameplay_text1_asset;
-Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture, gameplay_text1_texture;
+Image grid, cursor,  xicon, oicon, menuasset, press_e_asset, gameplay_text1_asset, p1icon_asset, p2icon_asset;
+Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture, gameplay_text1_texture, p1icon_texture, p2icon_texture;
 
 void menuscreen() {
     float interval = 1.0;
@@ -154,7 +154,7 @@ void multiplayer() {
     while (!WindowShouldClose() && (!win && !draw)) {
         inputChecker(x, y);
 
-        if(IsKeyPressed(KEY_SPACE) && mat[y][x] == ' ') {
+        if(IsKeyPressed(KEY_SPACE) && mat[y][x] == ' '){
             mat[y][x] = (turn)? 'X' : 'O'; // placing token
             turn = !turn;
             ++turncount;
@@ -164,7 +164,11 @@ void multiplayer() {
 
         ClearBackground(BLACK);
         DrawTexture(gridtexture, 0, 0, WHITE); //drawing the grid
+
         DrawTexture(gameplay_text1_texture, 250, 40, WHITE);
+        if(turn)DrawTexture(p1icon_texture, 470, 35, WHITE);
+        else DrawTexture(p2icon_texture, 470, 35, WHITE);
+
         rendercursor(x,y); //rendering the cursor
         renderstate(mat); //rendering the game state/placed tokens
 

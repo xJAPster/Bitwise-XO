@@ -21,6 +21,11 @@ int main(){
     gameplay_text1_asset = LoadImage("assets/gameplay_text1.png");
     gameplay_text1_texture = LoadTextureFromImage(gameplay_text1_asset);
 
+    p1icon_asset = LoadImage("assets/p1icon.png");
+    p1icon_texture = LoadTextureFromImage(p1icon_asset);
+    p2icon_asset = LoadImage("assets/p2icon.png");
+    p2icon_texture = LoadTextureFromImage(p2icon_asset);
+
     grid = LoadImage("assets/grid.png");
     gridtexture = LoadTextureFromImage(grid);
     cursor = LoadImage("assets/selectcursor.png");
@@ -53,6 +58,12 @@ int main(){
     UnloadImage(menuasset);
     UnloadTexture(press_e_texture);
     UnloadImage(press_e_asset);
+    UnloadTexture(gameplay_text1_texture);
+    UnloadImage(gameplay_text1_asset);
+    UnloadTexture(p1icon_texture);
+    UnloadImage(p1icon_asset);
+    UnloadTexture(p2icon_texture);
+    UnloadImage(p2icon_asset);
 
     CloseAudioDevice();
     CloseWindow();
