@@ -1,21 +1,23 @@
 #include "fnHeader.h"
 
-bool menuexit = 0, gameover = 0, mode = 1;
+bool menuexit = 0, gameover = 0, mode = 1, draw = 0;
 Image grid, cursor,  xicon, oicon, menuasset, press_e_asset;
 Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture;
 
 void menuscreen() {
     float interval = 1.0;
+    float timeElapsed;
     
     while (!WindowShouldClose() && !menuexit) {
-        float timeElapsed = GetTime();
+        timeElapsed = GetTime();
+        
         BeginDrawing();
-        ClearBackground(BLACK);
 
+        ClearBackground(BLACK);
         DrawTexture(menutexture, 0, 0, WHITE);
-        //blinking 'press enter to start' text
+       
         bool shouldDraw = fmod(timeElapsed, interval*2) < interval;
-        if(shouldDraw)DrawTexture(press_e_texture, 420, 450, WHITE);
+        if(shouldDraw)DrawTexture(press_e_texture, 430, 450, WHITE);  //blinking 'press enter to start' text
 
         EndDrawing();
 
@@ -131,7 +133,6 @@ void renderstate(const vector<vector<char>>& mat){
 }
 
 bool winvalidation(const vector<vector<char>>& mat){
-
     // row and column check
     for (int i = 0; i < 3; ++i) {
         if (mat[i][0] != ' ' && mat[i][0] == mat[i][1] && mat[i][1] == mat[i][2]) return true;
@@ -158,6 +159,7 @@ void multiplayer() {
             turn = !turn;
             ++turncount;
         }
+        
         BeginDrawing();
 
         ClearBackground(BLACK);
@@ -167,7 +169,7 @@ void multiplayer() {
 
         EndDrawing();
 
-        if (winvalidation(mat)) { 
+        if (winvalidation(mat) || turncount==9) { 
             win = 1;
             gameover = 1;
         }

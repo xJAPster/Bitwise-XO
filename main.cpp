@@ -44,10 +44,14 @@ int main(){
     UnloadImage(xicon);
     UnloadTexture(otexture);
     UnloadImage(oicon);
-
+    UnloadTexture(menutexture);
+    UnloadImage(menuasset);
+    UnloadTexture(press_e_texture);
+    UnloadImage(press_e_asset);
 
     CloseAudioDevice();
     CloseWindow();
 
     return 0;
 }
+
