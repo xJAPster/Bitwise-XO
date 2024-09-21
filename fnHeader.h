@@ -9,6 +9,3 @@ extern Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, pr
 
 void menuscreen();
 void multiplayer();
-//void endscreen();
-
-

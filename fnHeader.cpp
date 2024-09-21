@@ -177,6 +177,7 @@ void multiplayer() {
         }
 
         if (winvalidation(mat, winflag) || turncount==9) {  //win validation
+            //possibly divvy this part up into a function ? -----------------------------
             if(turncount<9)win=1; //else it is a draw
 
             gameover=1; //program exit flag
@@ -184,24 +185,34 @@ void multiplayer() {
             while(!WindowShouldClose()){
                 BeginDrawing();
 
-                if(win){
+                if(win){ //won game
                     DrawTexture(gridtexture, 0, 0, WHITE);
                     renderstate(mat);
 
                     //drawing the strikethrough line
-                    if(winflag[0])DrawLine(400,225, 888,225, WHITE);
-                    if(winflag[1])DrawLine(400,385, 888,385, WHITE);
-                    if(winflag[2])DrawLine(400,545, 888,545, WHITE);
+                    if(winflag[0])DrawRectangle(400,225, 480,5, GRAY);
+                    if(winflag[1])DrawRectangle(400,385, 480,5, GRAY);
+                    if(winflag[2])DrawRectangle(400,545, 480,5, GRAY);
 
-                    if(winflag[3])DrawLine(495,140, 495,600, WHITE);
-                    if(winflag[4])DrawLine(650,140, 650,600, WHITE);
-                    if(winflag[5])DrawLine(800,140, 800,600, WHITE);
-
-                    if(winflag[6])DrawLine(425,160, 865,595, WHITE);
-                    if(winflag[7])DrawLine(860,160, 425,595, WHITE);
+                    if(winflag[3])DrawRectangle(495,140, 5,480, GRAY);
+                    if(winflag[4])DrawRectangle(650,140, 5,480, GRAY);
+                    if(winflag[5])DrawRectangle(800,140, 5,480, GRAY);
+                    
+                    if(winflag[6]){
+                        Rectangle strike = {865,595, 5,615};
+                        Vector2 origin = {0,0};
+                        
+                        DrawRectanglePro(strike, origin, 136.0, GRAY);
+                    }
+                    if(winflag[7]){
+                        Rectangle strike = {425,595, 5,615};
+                        Vector2 origin = {0,0};
+                        
+                        DrawRectanglePro(strike, origin, 226.0, GRAY);
+                    }
                 }
 
-                else{
+                else{ //draw game
                     DrawTexture(gridtexture, 0, 0, WHITE);
                     renderstate(mat);
                 }
@@ -231,14 +242,3 @@ void multiplayer() {
         EndDrawing();
     }
 }
-
-// void endscreen() {
-//     while (!WindowShouldClose() && gameover) {
-//         BeginDrawing();
-//         ClearBackground(BLACK);
-//         DrawText("JOEVER SCREEN", 640, 360, 30, WHITE); // placeholder
-//         EndDrawing();
-
-//         if (IsKeyPressed(KEY_ENTER)) return;
-//     }
-// }
