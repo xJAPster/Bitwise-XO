@@ -1,6 +1,6 @@
 #include "fnHeader.h"
 
-bool menuexit = 0, gameover = 0, mode = 1, draw = 0;
+bool menuexit = 0, gameover = 0, mode = 1;
 Image grid, cursor,  xicon, oicon, menuasset, press_e_asset, gameplay_text1_asset, p1icon_asset, p2icon_asset;
 Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture, gameplay_text1_texture, p1icon_texture, p2icon_texture;
 
@@ -132,16 +132,30 @@ void renderstate(const vector<vector<char>>& mat){
     }
 }
 
-bool winvalidation(const vector<vector<char>>& mat){
+bool winvalidation(const vector<vector<char>>& mat, vector<bool>& winflag){
     // row and column check
     for (int i = 0; i < 3; ++i) {
-        if (mat[i][0] != ' ' && mat[i][0] == mat[i][1] && mat[i][1] == mat[i][2]) return true;
-        if (mat[0][i] != ' ' && mat[0][i] == mat[1][i] && mat[1][i] == mat[2][i]) return true;
+        if (mat[i][0] != ' ' && mat[i][0] == mat[i][1] && mat[i][1] == mat[i][2]){
+            winflag[i]=1;
+            return true;
+        } 
+            
+        if (mat[0][i] != ' ' && mat[0][i] == mat[1][i] && mat[1][i] == mat[2][i]){
+            winflag[3+i]=1;
+            return true;
+        }
     }
-
-    // diagonal check
-    if (mat[0][0] != ' ' && mat[0][0] == mat[1][1] && mat[1][1] == mat[2][2]) return true;
-    if (mat[2][0] != ' ' && mat[2][0] == mat[1][1] && mat[1][1] == mat[0][2]) return true;
+    
+    // diagonals check
+    if (mat[0][0] != ' ' && mat[0][0] == mat[1][1] && mat[1][1] == mat[2][2]){
+        winflag[6]=1;
+        return true;
+    }
+    
+    if (mat[2][0] != ' ' && mat[2][0] == mat[1][1] && mat[1][1] == mat[0][2]){
+        winflag[7]=1;
+        return true;
+    }
 
     return false;
 }
@@ -149,15 +163,57 @@ bool winvalidation(const vector<vector<char>>& mat){
 void multiplayer() {
     int x = 0, y = 0, turncount = 0;
     bool win = 0, turn = 1;
+
+    vector<bool>winflag(8, 0);
     vector<vector<char>> mat(3, vector<char>(3, ' '));
 
-    while (!WindowShouldClose() && (!win && !draw)) {
+    while (!WindowShouldClose() && !gameover) {
         inputChecker(x, y);
 
-        if(IsKeyPressed(KEY_SPACE) && mat[y][x] == ' '){
-            mat[y][x] = (turn)? 'X' : 'O'; // placing token
+        if(IsKeyPressed(KEY_SPACE) && mat[y][x] == ' '){ // placing token
+            mat[y][x] = (turn)? 'X' : 'O'; 
             turn = !turn;
             ++turncount;
+        }
+
+        if (winvalidation(mat, winflag) || turncount==9) {  //win validation
+            if(turncount<9)win=1; //else it is a draw
+
+            gameover=1; //program exit flag
+
+            while(!WindowShouldClose()){
+                BeginDrawing();
+
+                if(win){
+                    DrawTexture(gridtexture, 0, 0, WHITE);
+                    renderstate(mat);
+
+                    //drawing the strikethrough line
+                    if(winflag[0])DrawLine(400,225, 888,225, WHITE);
+                    if(winflag[1])DrawLine(400,385, 888,385, WHITE);
+                    if(winflag[2])DrawLine(400,545, 888,545, WHITE);
+
+                    if(winflag[3])DrawLine(495,140, 495,600, WHITE);
+                    if(winflag[4])DrawLine(650,140, 650,600, WHITE);
+                    if(winflag[5])DrawLine(800,140, 800,600, WHITE);
+
+                    if(winflag[6])DrawLine(425,160, 865,595, WHITE);
+                    if(winflag[7])DrawLine(860,160, 425,595, WHITE);
+                }
+
+                else{
+                    DrawTexture(gridtexture, 0, 0, WHITE);
+                    renderstate(mat);
+                }
+
+                EndDrawing();
+
+                if(IsKeyPressed(KEY_ENTER))return;
+                else if(IsKeyPressed(KEY_R)){
+                    gameover=0;
+                    return;
+                }
+            }
         }
         
         BeginDrawing();
@@ -166,30 +222,23 @@ void multiplayer() {
         DrawTexture(gridtexture, 0, 0, WHITE); //drawing the grid
 
         DrawTexture(gameplay_text1_texture, 250, 40, WHITE);
-        if(turn)DrawTexture(p1icon_texture, 470, 35, WHITE);
+        if(turn) DrawTexture(p1icon_texture, 470, 35, WHITE); 
         else DrawTexture(p2icon_texture, 470, 35, WHITE);
 
         rendercursor(x,y); //rendering the cursor
         renderstate(mat); //rendering the game state/placed tokens
 
         EndDrawing();
-
-        if (winvalidation(mat) || turncount==9) { 
-            if(turncount==9)draw=1;
-            else win=1;
-
-            gameover=1;
-        }
     }
 }
 
-void endscreen() {
-    while (!WindowShouldClose() && gameover) {
-        BeginDrawing();
-        ClearBackground(BLACK);
-        DrawText("JOEVER SCREEN", 640, 360, 30, WHITE); // placeholder
-        EndDrawing();
+// void endscreen() {
+//     while (!WindowShouldClose() && gameover) {
+//         BeginDrawing();
+//         ClearBackground(BLACK);
+//         DrawText("JOEVER SCREEN", 640, 360, 30, WHITE); // placeholder
+//         EndDrawing();
 
-        if (IsKeyPressed(KEY_ENTER)) return;
-    }
-}
+//         if (IsKeyPressed(KEY_ENTER)) return;
+//     }
+// }

@@ -39,7 +39,6 @@ int main(){
     while(!WindowShouldClose()){
         if(!menuexit)menuscreen();
 
-        if(gameover)endscreen();
         if(gameover)break; 
         
         if(mode)multiplayer();
