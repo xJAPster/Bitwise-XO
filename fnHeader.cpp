@@ -4,6 +4,7 @@ bool menuexit = 0, gameover = 0, mode = 1;
 Image grid, cursor,  xicon, oicon, menuasset, press_e_asset, gameplay_text1_asset, p1icon_asset, p2icon_asset;
 Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture, gameplay_text1_texture, p1icon_texture, p2icon_texture;
 
+
 void menuscreen() {
     float interval = 1.0;
     float timeElapsed;
@@ -26,47 +27,6 @@ void menuscreen() {
             ClearBackground(BLACK);
         }
     }
-}
-
-//checking for user input
-inline void inputChecker(int& x, int& y) {
-    if (IsKeyPressed(KEY_W) && y > 0) --y;
-    if (IsKeyPressed(KEY_S) && y < 2) ++y;
-    if (IsKeyPressed(KEY_A) && x > 0) --x;
-    if (IsKeyPressed(KEY_D) && x < 2) ++x;
-}
-
-//rendering selection cursor
-void rendercursor(const int& x, const int& y) {
-    int posX, posY;
-
-    //x : 430, 583, 736
-    //y : 160, 313, 466
-    switch(x){
-        case 0:
-            posX = 430;
-            break;
-        case 1:
-            posX = 583;
-            break;
-        case 2:
-            posX = 736;
-            break;
-    }
-
-    switch(y){
-        case 0:
-            posY = 160;
-            break;
-        case 1:
-            posY = 313;
-            break;
-        case 2:
-            posY = 466;
-            break;
-    }
-
-    DrawTexture(cursortexture, posX, posY, WHITE);
 }
 
 //rendering placed tokens
@@ -163,12 +123,13 @@ bool winvalidation(const vector<vector<char>>& mat, vector<bool>& winflag){
 void multiplayer() {
     int x = 0, y = 0, turncount = 0;
     bool win = 0, turn = 1;
+    unique_ptr<Cursor>cursorobj = make_unique<Cursor>();
 
     vector<bool>winflag(8, 0);
     vector<vector<char>> mat(3, vector<char>(3, ' '));
 
     while (!WindowShouldClose() && !gameover) {
-        inputChecker(x, y);
+        cursorobj->updateCursor(x, y);
 
         if(IsKeyPressed(KEY_SPACE) && mat[y][x] == ' '){ // placing token
             mat[y][x] = (turn)? 'X' : 'O'; 
@@ -236,7 +197,7 @@ void multiplayer() {
         if(turn) DrawTexture(p1icon_texture, 470, 35, WHITE); 
         else DrawTexture(p2icon_texture, 470, 35, WHITE);
 
-        rendercursor(x,y); //rendering the cursor
+        cursorobj->renderCursor(x,y); //rendering the cursor
         renderstate(mat); //rendering the game state/placed tokens
 
         EndDrawing();

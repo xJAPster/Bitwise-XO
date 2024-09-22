@@ -12,6 +12,8 @@ int main(){
     InitAudioDevice();
 
     //loading assets
+    Font pixelfont = LoadFont("assets/font/GomePixel-ARJd7.otf");
+
     menuasset = LoadImage("assets/menuasset1.png");
     menutexture = LoadTextureFromImage(menuasset);
 
@@ -28,8 +30,6 @@ int main(){
 
     grid = LoadImage("assets/grid.png");
     gridtexture = LoadTextureFromImage(grid);
-    cursor = LoadImage("assets/selectcursor.png");
-    cursortexture = LoadTextureFromImage(cursor);
 
     xicon = LoadImage("assets/X_icon.png");
     xtexture = LoadTextureFromImage(xicon);
@@ -47,8 +47,6 @@ int main(){
     //handling open assets
     UnloadTexture(gridtexture);
     UnloadImage(grid);
-    UnloadTexture(cursortexture);
-    UnloadImage(cursor);
     UnloadTexture(xtexture);
     UnloadImage(xicon);
     UnloadTexture(otexture);
