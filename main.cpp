@@ -1,5 +1,3 @@
-#include<bits/stdc++.h>
-#include<raylib.h>
 #include "fnHeader.h"
 using namespace std;
 
@@ -12,24 +10,10 @@ int main(){
     InitAudioDevice();
 
     //loading assets
-    menuasset = LoadImage("assets/menuasset1.png");
+    pixelfont = LoadFont("assets/font/GomePixel-DYJX1.otf");
+
+    menuasset = LoadImage("assets/menuasset2.png");
     menutexture = LoadTextureFromImage(menuasset);
-
-    press_e_asset = LoadImage("assets/press_enter.png");
-    press_e_texture  = LoadTextureFromImage(press_e_asset);
-
-    gameplay_text1_asset = LoadImage("assets/gameplay_text1.png");
-    gameplay_text1_texture = LoadTextureFromImage(gameplay_text1_asset);
-
-    p1icon_asset = LoadImage("assets/p1icon.png");
-    p1icon_texture = LoadTextureFromImage(p1icon_asset);
-    p2icon_asset = LoadImage("assets/p2icon.png");
-    p2icon_texture = LoadTextureFromImage(p2icon_asset);
-
-    grid = LoadImage("assets/grid.png");
-    gridtexture = LoadTextureFromImage(grid);
-    cursor = LoadImage("assets/selectcursor.png");
-    cursortexture = LoadTextureFromImage(cursor);
 
     xicon = LoadImage("assets/X_icon.png");
     xtexture = LoadTextureFromImage(xicon);
@@ -45,24 +29,11 @@ int main(){
     }
 
     //handling open assets
-    UnloadTexture(gridtexture);
-    UnloadImage(grid);
-    UnloadTexture(cursortexture);
-    UnloadImage(cursor);
+    UnloadFont(pixelfont);
     UnloadTexture(xtexture);
     UnloadImage(xicon);
     UnloadTexture(otexture);
     UnloadImage(oicon);
-    UnloadTexture(menutexture);
-    UnloadImage(menuasset);
-    UnloadTexture(press_e_texture);
-    UnloadImage(press_e_asset);
-    UnloadTexture(gameplay_text1_texture);
-    UnloadImage(gameplay_text1_asset);
-    UnloadTexture(p1icon_texture);
-    UnloadImage(p1icon_asset);
-    UnloadTexture(p2icon_texture);
-    UnloadImage(p2icon_asset);
 
     CloseAudioDevice();
     CloseWindow();
