@@ -5,8 +5,8 @@ using namespace std;
 
 extern bool menuexit, gameover, mode;
 extern Font pixelfont;
-extern Image xicon, oicon, menuasset, gameplay_text1_asset, p1icon_asset, p2icon_asset;
-extern Texture2D xtexture, otexture, menutexture, gameplay_text1_texture, p1icon_texture, p2icon_texture;
+extern Image xicon, oicon, menuasset;
+extern Texture2D xtexture, otexture, menutexture;
 
 void menuscreen();
 void multiplayer();

@@ -2,8 +2,8 @@
 
 bool menuexit = 0, gameover = 0, mode = 1;
 Font pixelfont;
-Image xicon, oicon, menuasset, gameplay_text1_asset, p1icon_asset, p2icon_asset;
-Texture2D xtexture, otexture, menutexture, gameplay_text1_texture, p1icon_texture, p2icon_texture;
+Image xicon, oicon, menuasset;
+Texture2D xtexture, otexture, menutexture;
 
 void menuscreen() {
     float interval = 1.0;
@@ -122,21 +122,21 @@ bool winvalidation(const vector<vector<char>>& mat, vector<bool>& winflag){
     return false;
 }
 
-void handleEndGame(bool& win, const vector<bool>& winflag, const int &turncount, const vector<vector<char>>& mat){
+void handleEndGame(bool& win, const bool& turn, const vector<bool>& winflag, const int& turncount, const vector<vector<char>>& mat){
     //possibly divvy this part up into a function ? -----------------------------
     if(turncount<9)win=1; //else it is a draw
 
     Grid gridobj;
-
     gameover=1; //program exit flag
 
     while(!WindowShouldClose()){
         BeginDrawing();
+        ClearBackground(BLACK);
+
+        gridobj.drawGrid();
+        renderstate(mat);
 
         if(win){ //won game
-            gridobj.drawGrid();
-            renderstate(mat);
-
             //drawing the strikethrough line
             if(winflag[0])DrawRectangle(400,225, 480,5, GRAY);
             if(winflag[1])DrawRectangle(400,385, 480,5, GRAY);
@@ -161,8 +161,7 @@ void handleEndGame(bool& win, const vector<bool>& winflag, const int &turncount,
         }
 
         else{ //draw game
-            gridobj.drawGrid();
-            renderstate(mat);
+            
         }
 
         EndDrawing();
@@ -191,11 +190,9 @@ void multiplayer() {
         ClearBackground(BLACK);
         gridobj.drawGrid();
 
-        //to be replaced------------------------------
-        DrawTexture(gameplay_text1_texture, 250, 40, WHITE);
-        if(turn) DrawTexture(p1icon_texture, 470, 35, WHITE); 
-        else DrawTexture(p2icon_texture, 470, 35, WHITE);
-        //--------------------------------------------
+        DrawTextEx(pixelfont, "player       , make your move.", {330, 20}, 55, 0, WHITE);
+        if(turn) DrawTextEx(pixelfont, "ONE", {475, 20}, 55, 0, RED); 
+        else DrawTextEx(pixelfont, "TWO", {457, 20}, 55, 0, BLUE); 
 
         cursorobj.updateCursor(x, y); //handling user input
         cursorobj.renderCursor(x,y); //rendering the cursor
@@ -210,7 +207,7 @@ void multiplayer() {
         }
 
         if (winvalidation(mat, winflag) || turncount==9) {  //game over
-            handleEndGame(win, winflag, turncount, mat);
+            handleEndGame(win, turn, winflag, turncount, mat);
             return;
         }
     }
