@@ -122,12 +122,16 @@ bool winvalidation(const vector<vector<char>>& mat, vector<bool>& winflag){
     return false;
 }
 
-void handleEndGame(bool& win, const bool& turn, const vector<bool>& winflag, const int& turncount, const vector<vector<char>>& mat){
-    //possibly divvy this part up into a function ? -----------------------------
-    if(turncount<9)win=1; //else it is a draw
+void handleEndGame(bool& win, const bool& turn, vector<bool>& winflag, const int& turncount, const vector<vector<char>>& mat){
+    if(turncount<=9 && winvalidation(mat, winflag))win=1; //else it is a draw
 
     Grid gridobj;
     gameover=1; //program exit flag
+
+    float interval = 1.0;
+    float timeElapsed;
+    bool shouldDraw;
+
 
     while(!WindowShouldClose()){
         BeginDrawing();
@@ -146,23 +150,19 @@ void handleEndGame(bool& win, const bool& turn, const vector<bool>& winflag, con
             if(winflag[4])DrawRectangle(650,140, 5,480, GRAY);
             if(winflag[5])DrawRectangle(800,140, 5,480, GRAY);
             
-            if(winflag[6]){
-                Rectangle strike = {865,595, 5,615};
-                Vector2 origin = {0,0};
-                
-                DrawRectanglePro(strike, origin, 136.0, GRAY);
-            }
-            if(winflag[7]){
-                Rectangle strike = {425,595, 5,615};
-                Vector2 origin = {0,0};
-                
-                DrawRectanglePro(strike, origin, 226.0, GRAY);
-            }
+            if(winflag[6])DrawRectanglePro({865,595, 5,615}, {0,0}, 136.0, GRAY);
+            if(winflag[7])DrawRectanglePro({425,595, 5,615}, {0,0}, 226.0, GRAY);
+
+            DrawTextEx(pixelfont, "PLAYER          WINS !", {420, 20}, 55, 0, WHITE);
+            if(turn) DrawTextEx(pixelfont, "TWO", {595, 20}, 55, 0, BLUE);
+            else DrawTextEx(pixelfont, "ONE", {610, 20}, 55, 0, RED);
         }
 
-        else{ //draw game
-            
-        }
+        else DrawTextEx(pixelfont, "DRAW MATCH. GGs !", {420, 20}, 55, 0, WHITE);
+
+        timeElapsed = GetTime();
+        shouldDraw = fmod(timeElapsed, interval * 2) < interval;
+        if(shouldDraw) DrawTextEx(pixelfont, "press R to restart - press ENTER/ESC to exit", {265, 650}, 45, 0, WHITE);
 
         EndDrawing();
 
@@ -193,6 +193,8 @@ void multiplayer() {
         DrawTextEx(pixelfont, "player       , make your move.", {330, 20}, 55, 0, WHITE);
         if(turn) DrawTextEx(pixelfont, "ONE", {475, 20}, 55, 0, RED); 
         else DrawTextEx(pixelfont, "TWO", {457, 20}, 55, 0, BLUE); 
+
+        DrawTextEx(pixelfont, "--WASD to move, SPACE to place token--", {300, 650}, 45, 0, WHITE);
 
         cursorobj.updateCursor(x, y); //handling user input
         cursorobj.renderCursor(x,y); //rendering the cursor
