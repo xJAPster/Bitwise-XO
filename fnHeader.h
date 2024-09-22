@@ -67,3 +67,24 @@ public:
         UnloadImage(cursor);
     }
 };
+
+class Grid{
+private:
+    int width, height;
+
+public:
+    Grid(){
+        width=30;
+        height=425;
+    }
+
+    inline void drawGrid(){
+        DrawRectangle(555,165, width,height, WHITE);
+        DrawRectangle(705,165, width,height, WHITE);
+
+        DrawRectangle(433,287, height,width, WHITE);
+        DrawRectangle(433,438, height,width, WHITE);
+    }
+
+    ~Grid(){}
+};

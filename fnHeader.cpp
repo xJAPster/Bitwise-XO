@@ -1,8 +1,8 @@
 #include "fnHeader.h"
 
 bool menuexit = 0, gameover = 0, mode = 1;
-Image grid, cursor,  xicon, oicon, menuasset, press_e_asset, gameplay_text1_asset, p1icon_asset, p2icon_asset;
-Texture2D gridtexture, cursortexture, xtexture, otexture, menutexture, press_e_texture, gameplay_text1_texture, p1icon_texture, p2icon_texture;
+Image grid, xicon, oicon, menuasset, press_e_asset, gameplay_text1_asset, p1icon_asset, p2icon_asset;
+Texture2D gridtexture, xtexture, otexture, menutexture, press_e_texture, gameplay_text1_texture, p1icon_texture, p2icon_texture;
 
 
 void menuscreen() {
@@ -120,16 +120,69 @@ bool winvalidation(const vector<vector<char>>& mat, vector<bool>& winflag){
     return false;
 }
 
+void handleEndGame(bool& win, const vector<bool>& winflag, const int &turncount, const vector<vector<char>>& mat){
+    //possibly divvy this part up into a function ? -----------------------------
+    if(turncount<9)win=1; //else it is a draw
+
+    gameover=1; //program exit flag
+
+    while(!WindowShouldClose()){
+        BeginDrawing();
+
+        if(win){ //won game
+            DrawTexture(gridtexture, 0, 0, WHITE);
+            renderstate(mat);
+
+            //drawing the strikethrough line
+            if(winflag[0])DrawRectangle(400,225, 480,5, GRAY);
+            if(winflag[1])DrawRectangle(400,385, 480,5, GRAY);
+            if(winflag[2])DrawRectangle(400,545, 480,5, GRAY);
+
+            if(winflag[3])DrawRectangle(495,140, 5,480, GRAY);
+            if(winflag[4])DrawRectangle(650,140, 5,480, GRAY);
+            if(winflag[5])DrawRectangle(800,140, 5,480, GRAY);
+            
+            if(winflag[6]){
+                Rectangle strike = {865,595, 5,615};
+                Vector2 origin = {0,0};
+                
+                DrawRectanglePro(strike, origin, 136.0, GRAY);
+            }
+            if(winflag[7]){
+                Rectangle strike = {425,595, 5,615};
+                Vector2 origin = {0,0};
+                
+                DrawRectanglePro(strike, origin, 226.0, GRAY);
+            }
+        }
+
+        else{ //draw game
+            DrawTexture(gridtexture, 0, 0, WHITE);
+            renderstate(mat);
+        }
+
+        EndDrawing();
+
+        if(IsKeyPressed(KEY_ENTER))return;
+        else if(IsKeyPressed(KEY_R)){
+            gameover=0;
+            return;
+        }
+    }
+}
+
 void multiplayer() {
     int x = 0, y = 0, turncount = 0;
     bool win = 0, turn = 1;
-    unique_ptr<Cursor>cursorobj = make_unique<Cursor>();
+
+    Cursor cursorobj;
+    Grid gridobj;
 
     vector<bool>winflag(8, 0);
     vector<vector<char>> mat(3, vector<char>(3, ' '));
 
     while (!WindowShouldClose() && !gameover) {
-        cursorobj->updateCursor(x, y);
+        cursorobj.updateCursor(x, y);
 
         if(IsKeyPressed(KEY_SPACE) && mat[y][x] == ' '){ // placing token
             mat[y][x] = (turn)? 'X' : 'O'; 
@@ -138,66 +191,21 @@ void multiplayer() {
         }
 
         if (winvalidation(mat, winflag) || turncount==9) {  //win validation
-            //possibly divvy this part up into a function ? -----------------------------
-            if(turncount<9)win=1; //else it is a draw
-
-            gameover=1; //program exit flag
-
-            while(!WindowShouldClose()){
-                BeginDrawing();
-
-                if(win){ //won game
-                    DrawTexture(gridtexture, 0, 0, WHITE);
-                    renderstate(mat);
-
-                    //drawing the strikethrough line
-                    if(winflag[0])DrawRectangle(400,225, 480,5, GRAY);
-                    if(winflag[1])DrawRectangle(400,385, 480,5, GRAY);
-                    if(winflag[2])DrawRectangle(400,545, 480,5, GRAY);
-
-                    if(winflag[3])DrawRectangle(495,140, 5,480, GRAY);
-                    if(winflag[4])DrawRectangle(650,140, 5,480, GRAY);
-                    if(winflag[5])DrawRectangle(800,140, 5,480, GRAY);
-                    
-                    if(winflag[6]){
-                        Rectangle strike = {865,595, 5,615};
-                        Vector2 origin = {0,0};
-                        
-                        DrawRectanglePro(strike, origin, 136.0, GRAY);
-                    }
-                    if(winflag[7]){
-                        Rectangle strike = {425,595, 5,615};
-                        Vector2 origin = {0,0};
-                        
-                        DrawRectanglePro(strike, origin, 226.0, GRAY);
-                    }
-                }
-
-                else{ //draw game
-                    DrawTexture(gridtexture, 0, 0, WHITE);
-                    renderstate(mat);
-                }
-
-                EndDrawing();
-
-                if(IsKeyPressed(KEY_ENTER))return;
-                else if(IsKeyPressed(KEY_R)){
-                    gameover=0;
-                    return;
-                }
-            }
+            handleEndGame(win, winflag, turncount, mat);
+            return;
         }
         
         BeginDrawing();
 
         ClearBackground(BLACK);
-        DrawTexture(gridtexture, 0, 0, WHITE); //drawing the grid
+        // DrawTexture(gridtexture, 0, 0, WHITE); //drawing the grid
+        gridobj.drawGrid();
 
         DrawTexture(gameplay_text1_texture, 250, 40, WHITE);
         if(turn) DrawTexture(p1icon_texture, 470, 35, WHITE); 
         else DrawTexture(p2icon_texture, 470, 35, WHITE);
 
-        cursorobj->renderCursor(x,y); //rendering the cursor
+        cursorobj.renderCursor(x,y); //rendering the cursor
         renderstate(mat); //rendering the game state/placed tokens
 
         EndDrawing();
