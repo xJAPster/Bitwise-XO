@@ -1,4 +1,4 @@
-#include "fnHeader.h"
+#include "fnHeader.hpp"
 using namespace std;
 
 int main(){
@@ -9,15 +9,22 @@ int main(){
     SetTargetFPS(60);
     InitAudioDevice();
 
+    SetSoundVolume(token_placed, 25);
+    SetSoundVolume(victoryjingle, 25);
+
     //loading assets
     pixelfont = LoadFont("assets/font/GomePixel-DYJX1.otf");
 
-    menuasset = LoadImage("assets/menuasset2.png");
+    invalid_move = LoadSound("assets/sfx/invalid_move.mp3");
+    victoryjingle = LoadSound("assets/sfx/victoryjingle.mp3");
+    token_placed = LoadSound("assets/sfx/token_placed.mp3");
+
+    menuasset = LoadImage("assets/vfx/menuasset2.png");
     menutexture = LoadTextureFromImage(menuasset);
 
-    xicon = LoadImage("assets/X_icon.png");
+    xicon = LoadImage("assets/vfx/X_icon.png");
     xtexture = LoadTextureFromImage(xicon);
-    oicon = LoadImage("assets/O_icon.png");
+    oicon = LoadImage("assets/vfx/O_icon.png");
     otexture = LoadTextureFromImage(oicon);
 
     while(!WindowShouldClose()){
@@ -34,6 +41,9 @@ int main(){
     UnloadImage(xicon);
     UnloadTexture(otexture);
     UnloadImage(oicon);
+    UnloadSound(victoryjingle);
+    UnloadSound(invalid_move);
+    UnloadSound(token_placed);
 
     CloseAudioDevice();
     CloseWindow();
