@@ -19,7 +19,7 @@ private:
 
 public:
     Cursor(){
-        cursor = LoadImage("assets/selectcursor.png");
+        cursor = LoadImage("assets/vfx/selectcursor.png");
         cursortexture = LoadTextureFromImage(cursor);
     }
 

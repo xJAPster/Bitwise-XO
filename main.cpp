@@ -1,4 +1,4 @@
-#include "fnHeader.h"
+#include "fnHeader.hpp"
 using namespace std;
 
 int main(){
@@ -12,12 +12,12 @@ int main(){
     //loading assets
     pixelfont = LoadFont("assets/font/GomePixel-DYJX1.otf");
 
-    menuasset = LoadImage("assets/menuasset2.png");
+    menuasset = LoadImage("assets/vfx/menuasset2.png");
     menutexture = LoadTextureFromImage(menuasset);
 
-    xicon = LoadImage("assets/X_icon.png");
+    xicon = LoadImage("assets/vfx/X_icon.png");
     xtexture = LoadTextureFromImage(xicon);
-    oicon = LoadImage("assets/O_icon.png");
+    oicon = LoadImage("assets/vfx/O_icon.png");
     otexture = LoadTextureFromImage(oicon);
 
     while(!WindowShouldClose()){

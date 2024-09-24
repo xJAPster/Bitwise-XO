@@ -1,4 +1,4 @@
-#include "fnHeader.h"
+#include "fnHeader.hpp"
 
 bool menuexit = 0, gameover = 0, mode = 1;
 Font pixelfont;
