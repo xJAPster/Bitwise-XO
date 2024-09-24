@@ -80,6 +80,7 @@ public:
     ~Cursor(){
         UnloadTexture(cursortexture);
         UnloadImage(cursor);
+        UnloadSound(cursor_move);
     }
 };
 

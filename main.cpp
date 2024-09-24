@@ -41,6 +41,9 @@ int main(){
     UnloadImage(xicon);
     UnloadTexture(otexture);
     UnloadImage(oicon);
+    UnloadSound(victoryjingle);
+    UnloadSound(invalid_move);
+    UnloadSound(token_placed);
 
     CloseAudioDevice();
     CloseWindow();
