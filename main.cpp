@@ -9,8 +9,15 @@ int main(){
     SetTargetFPS(60);
     InitAudioDevice();
 
+    SetSoundVolume(token_placed, 25);
+    SetSoundVolume(victoryjingle, 25);
+
     //loading assets
     pixelfont = LoadFont("assets/font/GomePixel-DYJX1.otf");
+
+    invalid_move = LoadSound("assets/sfx/invalid_move.mp3");
+    victoryjingle = LoadSound("assets/sfx/victoryjingle.mp3");
+    token_placed = LoadSound("assets/sfx/token_placed.mp3");
 
     menuasset = LoadImage("assets/vfx/menuasset2.png");
     menutexture = LoadTextureFromImage(menuasset);

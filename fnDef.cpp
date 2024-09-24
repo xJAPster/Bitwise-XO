@@ -2,6 +2,7 @@
 
 bool menuexit = 0, gameover = 0, mode = 1;
 Font pixelfont;
+Sound token_placed, victoryjingle, invalid_move;
 Image xicon, oicon, menuasset;
 Texture2D xtexture, otexture, menutexture;
 
@@ -123,7 +124,10 @@ bool winvalidation(const vector<vector<char>>& mat, vector<bool>& winflag){
 }
 
 void handleEndGame(bool& win, const bool& turn, vector<bool>& winflag, const int& turncount, const vector<vector<char>>& mat){
-    if(turncount<=9 && winvalidation(mat, winflag))win=1; //else it is a draw
+    if(turncount<=9 && winvalidation(mat, winflag)){
+        PlaySound(victoryjingle);
+        win=1; //else it is a draw
+    }
 
     Grid gridobj;
     gameover=1; //program exit flag
@@ -202,10 +206,14 @@ void multiplayer() {
 
         EndDrawing();
 
-        if(IsKeyPressed(KEY_SPACE) && mat[y][x] == ' '){ // placing token
-            mat[y][x] = (turn)? 'X' : 'O'; 
-            turn = !turn;
-            ++turncount;
+        if(IsKeyPressed(KEY_SPACE)){
+            if(mat[y][x] == ' '){ //token placed
+                mat[y][x] = (turn)? 'X' : 'O'; 
+                turn = !turn;
+                ++turncount;
+                PlaySound(token_placed);
+            }
+            else PlaySound(invalid_move); //invalid move
         }
 
         if (winvalidation(mat, winflag) || turncount==9) {  //game over
