@@ -3,13 +3,15 @@
 bool menuexit = 0, gameover = 0, mode = 1;
 Font pixelfont;
 Sound token_placed, victoryjingle, invalid_move;
-Image xicon, oicon, menuasset;
-Texture2D xtexture, otexture, menutexture;
+Texture menutexture;
 
 void menuscreen() {
     float interval = 1.0;
     float timeElapsed;
     bool shouldDraw;
+
+    //loading relevant menu screen vfx assets
+    menutexture = LoadTexture("assets/vfx/menuasset2.png");
     
     while (!WindowShouldClose() && !menuexit) {
         BeginDrawing();
@@ -28,12 +30,11 @@ void menuscreen() {
             ClearBackground(BLACK);
         }
     }
-    UnloadImage(menuasset);
     UnloadTexture(menutexture);
 }
 
-//rendering placed tokens
-void renderstate(const vector<vector<char>>& mat){
+//class Token member declaration state
+void Token::renderTokens(const vector<vector<char>>& mat){
     int posX, posY;
 
     for(int y=0 ; y<3 ; ++y){
@@ -95,6 +96,65 @@ void renderstate(const vector<vector<char>>& mat){
     }
 }
 
+//class Cursor member function definitions
+inline void Cursor::updateCursor(int& x, int& y){
+    if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && y > 0){
+        --y;
+        PlaySound(cursor_move);
+    }
+    if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) && y < 2){
+        ++y;
+        PlaySound(cursor_move);
+    }
+    if ((IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) && x > 0){
+        --x;
+        PlaySound(cursor_move);
+    }
+    if ((IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) && x < 2){
+        ++x;
+        PlaySound(cursor_move);
+    }
+}
+
+void Cursor::renderCursor(const int& x, const int& y) {
+    int posX, posY;
+
+    switch(x){
+        case 0:
+            posX = 433;
+            break;
+        case 1:
+            posX = 582;
+            break;
+        case 2:
+            posX = 732;
+            break;
+    }
+
+    switch(y){
+        case 0:
+            posY = 160;
+            break;
+        case 1:
+            posY = 313;
+            break;
+        case 2:
+            posY = 466;
+            break;
+    }
+
+    DrawTexture(cursortexture, posX, posY, WHITE);
+}
+
+//class Grid member function definitions
+inline void Grid::drawGrid(){
+    DrawRectangle(555,165, width,height, WHITE);
+    DrawRectangle(705,165, width,height, WHITE);
+
+    DrawRectangle(433,287, height,width, WHITE);
+    DrawRectangle(433,438, height,width, WHITE);
+}
+
 bool winvalidation(const vector<vector<char>>& mat, vector<bool>& winflag){
     // row and column check
     for (int i = 0; i < 3; ++i) {
@@ -123,6 +183,20 @@ bool winvalidation(const vector<vector<char>>& mat, vector<bool>& winflag){
     return false;
 }
 
+//Confetti class member declaration
+void Confetti::renderCelebration(const float& timeStarted, const bool& turn){
+    const float timeNow = GetTime();
+    float interval = 0.05;
+    bool drift = fmod(timeNow, interval*2) < interval;
+
+    if(turn){
+        DrawTexture(blueconfetti, (drift)? 0 : 20, (int)((timeNow - timeStarted)*300), WHITE);
+        return;
+    }
+
+    DrawTexture(redconfetti, (drift)? 0 : 20, (int)((timeNow - timeStarted)*300), WHITE);
+}
+
 void handleEndGame(bool& win, const bool& turn, vector<bool>& winflag, const int& turncount, const vector<vector<char>>& mat){
     if(turncount<=9 && winvalidation(mat, winflag)){
         PlaySound(victoryjingle);
@@ -130,19 +204,23 @@ void handleEndGame(bool& win, const bool& turn, vector<bool>& winflag, const int
     }
 
     Grid gridobj;
+    Token tokenobj;
+
     gameover=1; //program exit flag
 
     float interval = 1.0;
     float timeElapsed;
     bool shouldDraw;
 
+    float timeStarted = GetTime();
+    Confetti confettiobj;
 
     while(!WindowShouldClose()){
         BeginDrawing();
         ClearBackground(BLACK);
 
         gridobj.drawGrid();
-        renderstate(mat);
+        tokenobj.renderTokens(mat);
 
         if(win){ //won game
             //drawing the strikethrough line
@@ -160,6 +238,9 @@ void handleEndGame(bool& win, const bool& turn, vector<bool>& winflag, const int
             DrawTextEx(pixelfont, "PLAYER          WINS !", {420, 20}, 55, 0, WHITE);
             if(turn) DrawTextEx(pixelfont, "TWO", {595, 20}, 55, 0, BLUE);
             else DrawTextEx(pixelfont, "ONE", {610, 20}, 55, 0, RED);
+
+            //drawing confetti
+            if(GetTime() - timeStarted < 2) confettiobj.renderCelebration(timeStarted, turn);
         }
 
         else DrawTextEx(pixelfont, "DRAW MATCH. GGs !", {420, 20}, 55, 0, WHITE);
@@ -184,6 +265,7 @@ void multiplayer() {
 
     Cursor cursorobj;
     Grid gridobj;
+    Token tokenobj;
 
     vector<bool>winflag(8, 0);
     vector<vector<char>> mat(3, vector<char>(3, ' '));
@@ -202,7 +284,7 @@ void multiplayer() {
 
         cursorobj.updateCursor(x, y); //handling user input
         cursorobj.renderCursor(x,y); //rendering the cursor
-        renderstate(mat); //rendering the game state/placed tokens
+        tokenobj.renderTokens(mat); //rendering the game state/placed tokens
 
         EndDrawing();
 

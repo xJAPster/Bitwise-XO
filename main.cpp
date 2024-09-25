@@ -19,14 +19,6 @@ int main(){
     victoryjingle = LoadSound("assets/sfx/victoryjingle.mp3");
     token_placed = LoadSound("assets/sfx/token_placed.mp3");
 
-    menuasset = LoadImage("assets/vfx/menuasset2.png");
-    menutexture = LoadTextureFromImage(menuasset);
-
-    xicon = LoadImage("assets/vfx/X_icon.png");
-    xtexture = LoadTextureFromImage(xicon);
-    oicon = LoadImage("assets/vfx/O_icon.png");
-    otexture = LoadTextureFromImage(oicon);
-
     while(!WindowShouldClose()){
         if(!menuexit)menuscreen();
 
@@ -37,10 +29,6 @@ int main(){
 
     //handling open assets
     UnloadFont(pixelfont);
-    UnloadTexture(xtexture);
-    UnloadImage(xicon);
-    UnloadTexture(otexture);
-    UnloadImage(oicon);
     UnloadSound(victoryjingle);
     UnloadSound(invalid_move);
     UnloadSound(token_placed);
