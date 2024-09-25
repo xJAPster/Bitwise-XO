@@ -53,3 +53,26 @@ public:
 
     ~Grid(){}
 };
+
+class Token{
+private:
+    Image xicon, oicon;
+    Texture xtexture, otexture;
+
+public:
+    Token(){
+        xicon = LoadImage("assets/vfx/X_icon.png");
+        xtexture = LoadTextureFromImage(xicon);
+        oicon = LoadImage("assets/vfx/O_icon.png");
+        otexture = LoadTextureFromImage(oicon);
+    }
+
+    void renderTokens(const vector<vector<char>>& mat);
+
+    ~Token(){
+        UnloadTexture(xtexture);
+        UnloadImage(xicon);
+        UnloadTexture(otexture);
+        UnloadImage(oicon);
+    }
+};

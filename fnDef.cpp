@@ -10,6 +10,9 @@ void menuscreen() {
     float interval = 1.0;
     float timeElapsed;
     bool shouldDraw;
+
+    menuasset = LoadImage("assets/vfx/menuasset2.png");
+    menutexture = LoadTextureFromImage(menuasset);
     
     while (!WindowShouldClose() && !menuexit) {
         BeginDrawing();
@@ -32,8 +35,8 @@ void menuscreen() {
     UnloadTexture(menutexture);
 }
 
-//rendering placed tokens
-void renderstate(const vector<vector<char>>& mat){
+//class Token member declaration state
+void Token::renderTokens(const vector<vector<char>>& mat){
     int posX, posY;
 
     for(int y=0 ; y<3 ; ++y){
@@ -145,7 +148,7 @@ void Cursor::renderCursor(const int& x, const int& y) {
     DrawTexture(cursortexture, posX, posY, WHITE);
 }
 
-//class Grid function definitions
+//class Grid member function definitions
 inline void Grid::drawGrid(){
     DrawRectangle(555,165, width,height, WHITE);
     DrawRectangle(705,165, width,height, WHITE);
@@ -189,6 +192,8 @@ void handleEndGame(bool& win, const bool& turn, vector<bool>& winflag, const int
     }
 
     Grid gridobj;
+    Token tokenobj;
+
     gameover=1; //program exit flag
 
     float interval = 1.0;
@@ -201,7 +206,7 @@ void handleEndGame(bool& win, const bool& turn, vector<bool>& winflag, const int
         ClearBackground(BLACK);
 
         gridobj.drawGrid();
-        renderstate(mat);
+        tokenobj.renderTokens(mat);
 
         if(win){ //won game
             //drawing the strikethrough line
@@ -243,6 +248,7 @@ void multiplayer() {
 
     Cursor cursorobj;
     Grid gridobj;
+    Token tokenobj;
 
     vector<bool>winflag(8, 0);
     vector<vector<char>> mat(3, vector<char>(3, ' '));
@@ -261,7 +267,7 @@ void multiplayer() {
 
         cursorobj.updateCursor(x, y); //handling user input
         cursorobj.renderCursor(x,y); //rendering the cursor
-        renderstate(mat); //rendering the game state/placed tokens
+        tokenobj.renderTokens(mat); //rendering the game state/placed tokens
 
         EndDrawing();
 
