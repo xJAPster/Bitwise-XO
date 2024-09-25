@@ -27,55 +27,10 @@ public:
     }
 
     //checking for user input
-    inline void updateCursor(int& x, int& y){
-        if (IsKeyPressed(KEY_W) && y > 0){
-            --y;
-            PlaySound(cursor_move);
-        }
-        if (IsKeyPressed(KEY_S) && y < 2){
-            ++y;
-            PlaySound(cursor_move);
-        }
-        if (IsKeyPressed(KEY_A) && x > 0){
-            --x;
-            PlaySound(cursor_move);
-        }
-        if (IsKeyPressed(KEY_D) && x < 2){
-            ++x;
-            PlaySound(cursor_move);
-        }
-    }
+    inline void updateCursor(int& x, int& y);
 
     //rendering selection cursor
-    void renderCursor(const int& x, const int& y) {
-        int posX, posY;
-
-        switch(x){
-            case 0:
-                posX = 433;
-                break;
-            case 1:
-                posX = 582;
-                break;
-            case 2:
-                posX = 732;
-                break;
-        }
-
-        switch(y){
-            case 0:
-                posY = 160;
-                break;
-            case 1:
-                posY = 313;
-                break;
-            case 2:
-                posY = 466;
-                break;
-        }
-
-        DrawTexture(cursortexture, posX, posY, WHITE);
-    }
+    void renderCursor(const int& x, const int& y);
 
     ~Cursor(){
         UnloadTexture(cursortexture);
@@ -94,13 +49,7 @@ public:
         height=425;
     }
 
-    inline void drawGrid(){
-        DrawRectangle(555,165, width,height, WHITE);
-        DrawRectangle(705,165, width,height, WHITE);
-
-        DrawRectangle(433,287, height,width, WHITE);
-        DrawRectangle(433,438, height,width, WHITE);
-    }
+    inline void drawGrid();
 
     ~Grid(){}
 };

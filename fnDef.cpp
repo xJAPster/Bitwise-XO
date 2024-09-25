@@ -95,6 +95,65 @@ void renderstate(const vector<vector<char>>& mat){
     }
 }
 
+//class Cursor member function definitions
+inline void Cursor::updateCursor(int& x, int& y){
+    if (IsKeyPressed(KEY_W) && y > 0){
+        --y;
+        PlaySound(cursor_move);
+    }
+    if (IsKeyPressed(KEY_S) && y < 2){
+        ++y;
+        PlaySound(cursor_move);
+    }
+    if (IsKeyPressed(KEY_A) && x > 0){
+        --x;
+        PlaySound(cursor_move);
+    }
+    if (IsKeyPressed(KEY_D) && x < 2){
+        ++x;
+        PlaySound(cursor_move);
+    }
+}
+
+void Cursor::renderCursor(const int& x, const int& y) {
+    int posX, posY;
+
+    switch(x){
+        case 0:
+            posX = 433;
+            break;
+        case 1:
+            posX = 582;
+            break;
+        case 2:
+            posX = 732;
+            break;
+    }
+
+    switch(y){
+        case 0:
+            posY = 160;
+            break;
+        case 1:
+            posY = 313;
+            break;
+        case 2:
+            posY = 466;
+            break;
+    }
+
+    DrawTexture(cursortexture, posX, posY, WHITE);
+}
+
+//class Grid function definitions
+inline void Grid::drawGrid(){
+    DrawRectangle(555,165, width,height, WHITE);
+    DrawRectangle(705,165, width,height, WHITE);
+
+    DrawRectangle(433,287, height,width, WHITE);
+    DrawRectangle(433,438, height,width, WHITE);
+}
+
 bool winvalidation(const vector<vector<char>>& mat, vector<bool>& winflag){
     // row and column check
     for (int i = 0; i < 3; ++i) {
