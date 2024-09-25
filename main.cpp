@@ -19,9 +19,6 @@ int main(){
     victoryjingle = LoadSound("assets/sfx/victoryjingle.mp3");
     token_placed = LoadSound("assets/sfx/token_placed.mp3");
 
-    // menuasset = LoadImage("assets/vfx/menuasset2.png");
-    // menutexture = LoadTextureFromImage(menuasset);
-
     while(!WindowShouldClose()){
         if(!menuexit)menuscreen();
 

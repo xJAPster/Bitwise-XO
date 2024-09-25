@@ -6,23 +6,21 @@ using namespace std;
 extern bool menuexit, gameover, mode;
 extern Font pixelfont;
 extern Sound token_placed, victoryjingle, invalid_move;
-extern Image xicon, oicon, menuasset;
-extern Texture2D xtexture, otexture, menutexture;
+extern Texture menutexture;
 
 void menuscreen();
 void multiplayer();
 
 //class declaration space
+
 class Cursor{
 private:
-    Image cursor;
     Texture cursortexture;
     Sound cursor_move;
 
 public:
     Cursor(){
-        cursor = LoadImage("assets/vfx/selectcursor.png");
-        cursortexture = LoadTextureFromImage(cursor);
+        cursortexture = LoadTexture("assets/vfx/selectcursor.png");
         cursor_move = LoadSound("assets/sfx/cursor_move.mp3");
     }
 
@@ -34,7 +32,6 @@ public:
 
     ~Cursor(){
         UnloadTexture(cursortexture);
-        UnloadImage(cursor);
         UnloadSound(cursor_move);
     }
 };
@@ -56,23 +53,36 @@ public:
 
 class Token{
 private:
-    Image xicon, oicon;
     Texture xtexture, otexture;
 
 public:
     Token(){
-        xicon = LoadImage("assets/vfx/X_icon.png");
-        xtexture = LoadTextureFromImage(xicon);
-        oicon = LoadImage("assets/vfx/O_icon.png");
-        otexture = LoadTextureFromImage(oicon);
+        xtexture = LoadTexture("assets/vfx/X_icon.png");
+        otexture = LoadTexture("assets/vfx/O_icon.png");
     }
 
     void renderTokens(const vector<vector<char>>& mat);
 
     ~Token(){
         UnloadTexture(xtexture);
-        UnloadImage(xicon);
         UnloadTexture(otexture);
-        UnloadImage(oicon);
+    }
+};
+
+class Confetti{
+private: 
+    Texture redconfetti, blueconfetti;
+
+public:
+    Confetti(){
+        redconfetti= LoadTexture("assets/vfx/redconfetti.png");
+        blueconfetti = LoadTexture("assets/vfx/blueconfetti.png");
+    }
+
+    void renderCelebration(const float& timeStarted, const bool& turn);
+
+    ~Confetti(){
+        UnloadTexture(redconfetti);
+        UnloadTexture(blueconfetti);
     }
 };
