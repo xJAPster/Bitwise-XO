@@ -1,16 +1,13 @@
 #pragma once
-#include <vector>
-#include <cmath>
+#include <bits/stdc++.h>
 #include <raylib.h>
 using namespace std;
 
 extern bool menuexit, gameover, mode;
-
-//resources
 extern Font pixelfont;
+extern Sound token_placed, victoryjingle, invalid_move;
 extern Image xicon, oicon, menuasset;
 extern Texture2D xtexture, otexture, menutexture;
-extern Sound move, interact, invalid, wintune;
 
 void menuscreen();
 void multiplayer();
@@ -20,19 +17,33 @@ class Cursor{
 private:
     Image cursor;
     Texture cursortexture;
+    Sound cursor_move;
 
 public:
     Cursor(){
-        cursor = LoadImage("assets/selectcursor.png");
+        cursor = LoadImage("assets/vfx/selectcursor.png");
         cursortexture = LoadTextureFromImage(cursor);
+        cursor_move = LoadSound("assets/sfx/cursor_move.mp3");
     }
 
     //checking for user input
-    inline void updateCursor(int& x, int& y) {
-        if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && y > 0) --y;
-        if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) && y < 2) ++y;
-        if ((IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) && x > 0) --x;
-        if ((IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) && x < 2) ++x;
+    inline void updateCursor(int& x, int& y){
+        if (IsKeyPressed(KEY_W) && y > 0){
+            --y;
+            PlaySound(cursor_move);
+        }
+        if (IsKeyPressed(KEY_S) && y < 2){
+            ++y;
+            PlaySound(cursor_move);
+        }
+        if (IsKeyPressed(KEY_A) && x > 0){
+            --x;
+            PlaySound(cursor_move);
+        }
+        if (IsKeyPressed(KEY_D) && x < 2){
+            ++x;
+            PlaySound(cursor_move);
+        }
     }
 
     //rendering selection cursor
@@ -69,6 +80,7 @@ public:
     ~Cursor(){
         UnloadTexture(cursortexture);
         UnloadImage(cursor);
+        UnloadSound(cursor_move);
     }
 };
 
